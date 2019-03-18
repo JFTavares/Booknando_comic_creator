@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="{opf_ns}" unique-identifier="BookID" version="3.0" prefix="rendition: {rendition} ibooks: {ibooks}">
+
+<metadata xmlns:dcterms="{dcterms_ns}" xmlns:dc="{dc_ns}">
+
+    <dc:title>{title}</dc:title>
+    <dc:creator>{creator}</dc:creator>
+    <dc:publisher>{publisher}</dc:publisher>
+    <dc:language>pt-br</dc:language>
+    <meta content="cover-image" name="cover" />
+    <dc:date>{dctime}</dc:date>
+
+    <dc:identifier id="BookID">{uuid}</dc:identifier>
+    <meta property="dcterms:modified">{dctime}</meta>        
+    <meta property="rendition:layout">pre-paginated</meta>	
+    <meta property="rendition:orientation">auto</meta>
+    <meta property="rendition:spread">both</meta>
+    <meta property="ibooks:specified-fonts">true</meta>
+
+</metadata>
+
+<manifest>
+    <item id="nav" href="nav.xhtml" properties="nav" media-type="application/xhtml+xml" />
+    <item href="CSS/{style_sheet}" id="css" media-type="text/css"/>
+    {manifest}
+
+</manifest>
+
+<spine toc="ncx">
+    {spine}
+</spine>
+
+</package>

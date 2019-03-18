@@ -3,9 +3,6 @@
 # Booknando Comic Creator 0.1. 
 # baseado em: ComicIO: copyright (C) 2016, Daejuan Jacobs
 # Just need Python v3
-# Automatic create ePub3 Fixed Layout
-# ToDo
-# * Add page count
 # * dc:identifier for UPC/ISBN http://www.idpf.org/epub/30/spec/epub30-publications.html#sec-opf-dcidentifier
 # * Coverimage.xtml
 # * Fix {title}
@@ -23,7 +20,7 @@ import string
 import argparse
 
 
-class Jpg2Epub(object):
+class ComicCreator(object):
     
     version = 1  # class version when used as library
 
@@ -72,7 +69,6 @@ class Jpg2Epub(object):
         if value is None:
             if isinstance(self._zip_data, str):
                 return
-            self._write_toc()
             self._write_content()
             self._write_nav()
             self._zip.close()
@@ -91,32 +87,6 @@ class Jpg2Epub(object):
     """
     #nav_point id cannot start with a number according to epub spec.
     """
-    def _write_toc(self):
-        self._add_from_bytes('OEBPS/'+self.d['toc_name'], dedent("""\
-        <?xml version='1.0' encoding='utf-8'?>
-        <ncx xmlns="{ncx_ns}" version="2005-1" xml:lang="eng">
-          <head>
-            <meta content="{uuid}" name="dtb:uid"/>
-            <meta content="2" name="dtb:depth"/>
-            <meta content="Booknando Comic Creator v0.1" name="dtb:generator"/>
-            <meta content="0" name="dtb:totalPageCount"/>
-            <meta content="0" name="dtb:maxPageNumber"/>
-          </head>
-          <docTitle>
-            <text>Sumário</text>
-          </docTitle>
-          <navMap>
-            <navPoint id="{lead_ltr}{nav_uuid}" playOrder="1">
-              <navLabel>
-                <text>Start</text>
-              </navLabel>
-              <content src="{nav_point}"/>
-            </navPoint>
-          </navMap>
-        </ncx>
-        """).format(**self.d))
-        self._content.append((self.d['toc_name'], 'ncx',
-                              'application/x-dtbncx+xml'))
 
     def _write_content(self):
         d = self.d.copy()
@@ -144,66 +114,26 @@ class Jpg2Epub(object):
                 '<meta name="calibre:series" content="{}"/>' \
                 '<meta name="calibre:series_index" content="{}"/>'.format(
                     self._series, self._series_idx)
-        self._add_from_bytes('OEBPS/'+self.d["opf_name"], dedent(u"""\
-        <?xml version='1.0' encoding='utf-8'?>
-        <package xmlns="{opf_ns}" unique-identifier="BookID" version="3.0" prefix="rendition: {rendition} ibooks: {ibooks}">
-        <metadata xmlns:dcterms="{dcterms_ns}" xmlns:dc="{dc_ns}">
 
-            <dc:title>{title}</dc:title>
-            <dc:creator>{creator}</dc:creator>
-            <dc:publisher>{publisher}</dc:publisher>
-            <dc:language>pt-br</dc:language>
-            <meta content="cover-image" name="cover" />
-            <dc:date>{dctime}</dc:date>
+        self._write_file_from_template('OEBPS/'+self.d["opf_name"], 'template/content.tmpl', d)        
 
-            <dc:identifier id="BookID">{uuid}</dc:identifier>
-            <meta property="dcterms:modified">{dctime}</meta>        
-            <meta property="rendition:layout">pre-paginated</meta>	
-            <meta property="rendition:orientation">auto</meta>
-            <meta property="rendition:spread">both</meta>
-            <meta property="ibooks:specified-fonts">true</meta>
-          </metadata>
-          <manifest>
-            <item id="nav" href="nav.xhtml" properties="nav" media-type="application/xhtml+xml" />
-            <item href="CSS/{style_sheet}" id="css" media-type="text/css"/>
-            {manifest}
-            <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>
-          </manifest>
-          <spine toc="ncx">
-            {spine}
-          </spine>
-        </package>
-        """).format(**d).encode('utf-8'))
     def _write_nav(self):
         d = self.d.copy()
         nav = []
+        page_list = []
         d['nav'] = ''
         for f in self._content:
             if f[1].startswith('html'):
                 nav.append('<li><a href="{}">Page {}</a></li>'.format(*f))
         d['nav'] = '\n    '.join(nav)
-        self._add_from_bytes('OEBPS/'+self.d["nav_name"], dedent(u"""\
-        <?xml version="1.0" encoding="UTF-8"?>
-        <!DOCTYPE html>
-        <html xmlns="http://www.w3.org/1999/xhtml"
-            xmlns:epub="http://www.idpf.org/2007/ops">
-          <head>
-            <meta http-equiv="default-style" content="text/html; charset=utf-8"/>
-            <title>{title}</title>
-            <link rel="stylesheet" href="CSS/{style_sheet}" type="text/css"/>
-          </head>
-          <body>
-            <!-- Start of Nav Structures -->
-            <!-- Main Contents -->
-            <nav epub:type="toc" id="toc">
-            <h1>Sumário</h1>
-                <ol>
-                    {nav}
-                </ol>
-            </nav>
-            </body>
-        </html>
-        """).format(**d).encode('utf-8'))
+        
+        d['page_list'] = ''
+        for f in self._content:
+            if f[1].startswith('html'):
+                page_list.append('<li><a href="{}">{}</a></li>'.format(*f))
+        d['page_list'] = '\n    '.join(page_list)
+        
+        self._write_file_from_template('OEBPS/'+self.d["nav_name"], 'template/nav.tmpl', d)
 
     def _add_html(self, title):
         file_name = self._name(False)
@@ -234,8 +164,7 @@ class Jpg2Epub(object):
         """no leading zero's necessary in zip internal filenames"""
         return 'pag_{}.{}'.format(self._count, 'jpg' if image else 'xhtml')
 
-    def _add_image_file(self, file_name, width=None, height=None,
-                        strip=None, max_strip_pixel=None, z=None):
+    def _add_image_file(self, file_name, width=None, height=None, strip=None, max_strip_pixel=None, z=None):
         z = z if z else self.zip  # initializes if not done yet
         self._add_html(file_name)
         # you can compress JPEGs, but with little result (1-8%) and
@@ -305,7 +234,7 @@ class CBFormat(object):
 
 
 def do_epub(args):
-    with Jpg2Epub(args.title, title_sort=args.title_sort,
+    with ComicCreator(args.title, title_sort=args.title_sort,
                    file_name=args.output_name,
                    series=args.series, series_idx=args.index,
                    creator=args.creator, publisher=args.publisher, img_width=args.width, img_height=args.height, verbose=0) as j2e:
