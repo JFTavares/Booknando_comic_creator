@@ -24,8 +24,7 @@ class ComicCreator(object):
     
     version = 1  # class version when used as library
 
-    def __init__(self, title, file_name=None, creator=None,                       title_sort=None, publisher=None,
-                 series=None, img_width=None, img_height=None,  series_idx=None, verbose=0):
+    def __init__(self, title, file_name=None, creator=None,              publisher=None, img_width=None,        img_height=None,  verbose=0):
         self._output_name = file_name if file_name else \
             title.replace(' ', '_') + '.epub'
         self._files = None
@@ -33,11 +32,8 @@ class ComicCreator(object):
         self._zip_data = None
         self._content = []
         self._count = 1
-        self._series = series
-        self._series_idx = series_idx
         self.d = dict(
             title=title,
-            title_sort=title_sort if title_sort else title,
             creator=creator if creator else 'Jose Fernando',
             publisher=publisher if publisher else 'Editora Booknando',
             img_width=img_width if img_width else '768',
@@ -205,50 +201,23 @@ class ComicCreator(object):
         </container>
         """).rstrip().format(**self.d))
 
-class CBFormat(object):
-    def __init__(self, files, title, file_name=None):
-        #self.path = path
-        self.files = files
-        self._output_name = file_name if file_name else \
-            title.replace(' ', '_') + '.cbz'
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, typ, value, traceback):
-        self.zipdir()
-
-    def zipdir(self):
-        zipf = zipfile.ZipFile(self._output_name, 'w', zipfile.ZIP_DEFLATED)
-        for file in self.files:
-            zipf.write(file, compress_type=zipfile.ZIP_DEFLATED)
-        zipf.close()
 
 
 def do_epub(args):
-    with ComicCreator(args.title, title_sort=args.title_sort,
+    with ComicCreator(args.title,               
                    file_name=args.output_name,
-                   series=args.series, series_idx=args.index,
                    creator=args.creator, publisher=args.publisher, img_width=args.width, img_height=args.height, verbose=0) as j2e:
         for file_name in args.file_names:
             j2e.add_image_file(file_name)
 
-def do_cbz(args):
-    with CBFormat(args.file_names, args.title) as cb:
-        cb.zipdir()
-
 
 def main():
     parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument("--type", "-T", required=True)
     parser.add_argument("--title", "-t", required=True)
-    parser.add_argument("--title-sort", help="alternative title for sorting")
     parser.add_argument(
         "--output_name", "-o",
         help="epub name if not specified, derived from title",
     )
-    parser.add_argument("--series", help="series name")
-    parser.add_argument("--index", help="series index")
     parser.add_argument("--creator", help="Creator/Author")
     parser.add_argument("--publisher", help="Publisher")
     parser.add_argument("--width", help="Image width")
@@ -256,10 +225,7 @@ def main():
     parser.add_argument("file_names", nargs="+")
     args = parser.parse_args()
 
-    if args.type == "epub":
-        do_epub(args)
-    elif args.type == "cbz":
-        do_cbz(args)
+    do_epub(args)
 
 
 if __name__ == "__main__":
