@@ -165,7 +165,7 @@ class Jpg2Epub(object):
           </metadata>
           <manifest>
             <item id="nav" href="nav.xhtml" properties="nav" media-type="application/xhtml+xml" />
-            <item href="CSS/design.css" id="css" media-type="text/css"/>
+            <item href="CSS/{style_sheet}" id="css" media-type="text/css"/>
             {manifest}
             <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>
           </manifest>
@@ -190,7 +190,7 @@ class Jpg2Epub(object):
           <head>
             <meta http-equiv="default-style" content="text/html; charset=utf-8"/>
             <title>{title}</title>
-            <link rel="stylesheet" href="CSS/design.css" type="text/css"/>
+            <link rel="stylesheet" href="CSS/{style_sheet}" type="text/css"/>
           </head>
           <body>
             <!-- Start of Nav Structures -->
@@ -237,6 +237,7 @@ class Jpg2Epub(object):
             self.d['nav_point'] = file_name
             self._write_style_sheet()
 
+# Nova função para gravar aquivo
     def _write_file_from_template(self, file, template, data):
         template_file=open(template)
         template=template_file.read()
@@ -245,10 +246,6 @@ class Jpg2Epub(object):
     def _write_style_sheet(self):
         file_name = self.d['style_sheet']
         self._write_file_from_template('OEBPS/CSS/'+file_name, 'template/css.tmpl', self.d)
-        self._write_file_from_template('OEBPS/CSS2/'+file_name, 'template/css.tmpl', self.d)
-        #template_file=open('template/css.tmpl')
-        #template=template_file.read()
-        #self._add_from_bytes('OEBPS/CSS/'+file_name, dedent(template).format(**self.d).encode('utf-8'))
         self._content.append((file_name, 'css', 'text/css'))
 
     def _name(self, image=True):
