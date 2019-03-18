@@ -65,6 +65,7 @@ class ComicCreator(object):
             if isinstance(self._zip_data, str):
                 return
             self._write_content()
+            self._write_style_sheet()
             self._write_nav()
             self._zip.close()
             self._zip = None
@@ -79,9 +80,6 @@ class ComicCreator(object):
     def add_image_file(self, file_name):
         self._add_image_file(file_name)
         self._count += 1
-    """
-    #nav_point id cannot start with a number according to epub spec.
-    """
 
     def _write_content(self):
         d = self.d.copy()
@@ -131,11 +129,9 @@ class ComicCreator(object):
         
         self._write_file_from_template('OEBPS/'+file_name, 'template/html.tmpl', d)
         
-
         self._content.append((file_name, 'html{}'.format(self._count), 'application/xhtml+xml'))
-        if self.d['nav_point'] is None:
-            self.d['nav_point'] = file_name
-            self._write_style_sheet()
+
+
 
 # Nova função para gravar aquivo
     def _write_file_from_template(self, file, template, data):
