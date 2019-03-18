@@ -43,7 +43,6 @@ class ComicCreator(object):
             img_width=img_width if img_width else '768',
             img_height=img_height if img_height else '1024',
             opf_name="content.opf",
-            toc_name="toc.ncx",
             nav_name="nav.xhtml",
             dctime=datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
             ncx_ns='http://www.daisy.org/z3986/2005/ncx/',
@@ -107,13 +106,6 @@ class ComicCreator(object):
         d['manifest'] = '\n    '.join(manifest)
         d['spine'] = '\n    '.join(spine)
         d['ts'] = datetime.datetime.utcnow().isoformat() + '+00:00'
-        d['series'] = ''
-        if self._series:
-            d['series'] = \
-                u'\n' \
-                '<meta name="calibre:series" content="{}"/>' \
-                '<meta name="calibre:series_index" content="{}"/>'.format(
-                    self._series, self._series_idx)
 
         self._write_file_from_template('OEBPS/'+self.d["opf_name"], 'template/content.tmpl', d)        
 
