@@ -210,29 +210,11 @@ class Jpg2Epub(object):
         d = self.d.copy()
         d['title'] = title
         d['img_name'] = self._name()
-        self._add_from_bytes('OEBPS/'+file_name, dedent(u"""\
-        <?xml version='1.0' encoding='utf-8'?>
-        <!DOCTYPE html>
-        <html xmlns="http://www.w3.org/1999/xhtml" 
-                xmlns:epub="http://www.idpf.org/2007/ops" 
-                xmlns:ev="http://www.w3.org/2001/xml-events"
-                xmlns:ibooks="http://apple.com/ibooks/html-extensions"
-                lang="pt-br" xml:lang="pt-br">
-        <head>
-            <title>{title}</title>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-            <meta name="viewport" content="width={img_width}, height={img_height}" />
-            <link href="CSS/{style_sheet}" rel="stylesheet" type="text/css"/>
-        </head>
-         <body>
-            <div class="pageImage">
-              <img src="Image/{img_name}" alt="{title}"/>
-            </div>
-        </body>
-        </html>
-        """).format(**d).encode('utf-8'))
-        self._content.append((file_name, 'html{}'.format(self._count),
-                              'application/xhtml+xml'))
+        
+        self._write_file_from_template('OEBPS/'+file_name, 'template/html.tmpl', d)
+        
+
+        self._content.append((file_name, 'html{}'.format(self._count), 'application/xhtml+xml'))
         if self.d['nav_point'] is None:
             self.d['nav_point'] = file_name
             self._write_style_sheet()
@@ -260,12 +242,11 @@ class Jpg2Epub(object):
         # more complex/slow decompression (zip then jpeg)
         # Gain 2.836 Mb -> 2.798 Mb ( ~ 1% difference )
         if width:
-            im = EpubImage(file_name)
-            z.writestr(self._name(), im.read(), zipfile.ZIP_STORED)
+           im = EpubImage(file_name)
+           z.writestr(self._name(), im.read(), zipfile.ZIP_STORED)
         else:
             z.write(file_name, 'OEBPS/Image/'+self._name())
-        self._content.append((self._name(), 'img{}'.format(self._count),
-                              'image/jpeg'))
+        self._content.append((self._name(), 'img{}'.format(self._count), 'image/jpeg'))
 
     @property
     def zip(self):
