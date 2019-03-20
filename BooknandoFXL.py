@@ -3,7 +3,6 @@
 # Booknando Comic Creator 0.1. 
 # baseado em: ComicIO: copyright (C) 2016, Daejuan Jacobs
 # Just need Python v3
-# * dc:identifier for UPC/ISBN http://www.idpf.org/epub/30/spec/epub30-publications.html#sec-opf-dcidentifier
 # * Coverimage.xtml
 # * Fix {title}
 # * YAML/JSON load metadata
@@ -116,7 +115,7 @@ class ComicCreator(object):
         d['page_list'] = ''
         for f in self._content:
             if f[1].startswith('html'):
-                page_list.append('<li><a href="{}">{}</a></li>'.format(*f))
+                page_list.append('<li><a href="{}">{}</a></li>'.format(f[0],f[3]))
         d['page_list'] = '\n    '.join(page_list)
         
         self._write_file_from_template('OEBPS/'+self.d["nav_name"], 'template/nav.tmpl', d)
@@ -129,11 +128,11 @@ class ComicCreator(object):
         
         self._write_file_from_template('OEBPS/'+file_name, 'template/html.tmpl', d)
         
-        self._content.append((file_name, 'html{}'.format(self._count), 'application/xhtml+xml'))
+        self._content.append((file_name, 'html{}'.format(self._count), 'application/xhtml+xml', '{}'.format(self._count)))
 
 
 
-# Nova função para gravar aquivo
+# Nova função para gravar arquivo
     def _write_file_from_template(self, file, template, data):
         template_file=open(template)
         template=template_file.read()
@@ -145,7 +144,6 @@ class ComicCreator(object):
         self._content.append((file_name, 'css', 'text/css'))
 
     def _name(self, image=True):
-        """no leading zero's necessary in zip internal filenames"""
         return 'pag_{}.{}'.format(self._count, 'jpg' if image else 'xhtml')
 
     def _add_image_file(self, file_name, width=None, height=None, strip=None, max_strip_pixel=None, z=None):
