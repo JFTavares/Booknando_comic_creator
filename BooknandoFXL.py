@@ -17,26 +17,27 @@ import datetime
 import random
 import string
 import argparse
+import yaml
 
 
 class ComicCreator(object):
     
     version = 1  # class version when used as library
 
-    def __init__(self, title, file_name=None, creator=None,              publisher=None, img_width=None,        img_height=None,  verbose=0):
-        self._output_name = file_name if file_name else \
-            title.replace(' ', '_') + '.epub'
+    def __init__(self, file_name=None, meta_file=None,  verbose=0):
+        self._output_name = file_name
         self._files = None
         self._zip = None  # the in memory zip file
         self._zip_data = None
         self._content = []
         self._count = 1
+        self._open_metadata(meta_file)
         self.d = dict(
-            title=title,
-            creator=creator if creator else 'Jose Fernando',
-            publisher=publisher if publisher else 'Editora Booknando',
-            img_width=img_width if img_width else '768',
-            img_height=img_height if img_height else '1024',
+            title=metadata['title'],
+            creator= metadata['author'],
+            publisher=metadata['publisher'],
+            img_width = metadata['img_width'],
+            img_height = metadata['img_height'],
             opf_name="content.opf",
             nav_name="nav.xhtml",
             dctime=datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -51,7 +52,9 @@ class ComicCreator(object):
             cont_urn='urn:oasis:names:tc:opendocument:xmlns:container',
             mt='application/oebps-package+xml',  # media-type
             style_sheet='design.css',
+            alt = metadata['alt'],
             uuid=None,
+            isbn=metadata['ISBN'],
             nav_point=None,
             nav_uuid=None,
         )
@@ -75,6 +78,11 @@ class ComicCreator(object):
             # os.system('unzip -lv ' + self._output_name)
             return True
         return False
+
+    def _open_metadata(self, meta_file):
+        with open(meta_file) as f:
+            global metadata
+            metadata = yaml.safe_load(f)
 
     def add_image_file(self, file_name):
         self._add_image_file(file_name)
@@ -128,9 +136,8 @@ class ComicCreator(object):
     def _add_html(self, title):
         file_name = self._name(False)
         d = self.d.copy()
-        d['title'] = title
+       # d['title'] = title
         d['img_name'] = self._name()
-        
         self._write_file_from_template('OEBPS/'+file_name, 'template/html.tmpl', d)
         
         self._content.append((file_name, 'html{}'.format(self._count), 'application/xhtml+xml', '{}'.format(self._count)))
@@ -203,24 +210,19 @@ class ComicCreator(object):
 
 
 def do_epub(args):
-    with ComicCreator(args.title,               
-                   file_name=args.output_name,
-                   creator=args.creator, publisher=args.publisher, img_width=args.width, img_height=args.height, verbose=0) as j2e:
+    with ComicCreator(               
+                   file_name=args.output,meta_file=args.meta, verbose=0) as j2e:
         for file_name in args.file_names:
             j2e.add_image_file(file_name)
 
 
 def main():
     parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument("--title", "-t", required=True)
     parser.add_argument(
-        "--output_name", "-o",
-        help="epub name if not specified, derived from title",
+        "--output", "-o", 
+        help="epub name if not specified, derived from title", required=True
     )
-    parser.add_argument("--creator", help="Creator/Author")
-    parser.add_argument("--publisher", help="Publisher")
-    parser.add_argument("--width", help="Image width")
-    parser.add_argument("--height", help="Image height")
+    parser.add_argument("--meta", help="metadata")
     parser.add_argument("file_names", nargs="+")
     args = parser.parse_args()
 
