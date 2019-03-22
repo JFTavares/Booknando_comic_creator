@@ -95,7 +95,12 @@ class ComicCreator(object):
                     '<item href="Image/{}" id="{}" media-type="{}"/>'.format(*f))
 
             if f[1].startswith('html'):
-                spine.append('<itemref idref="{}"/>'.format(f[1]))
+                numero = int(f[3])
+                if numero%2:
+                    spine.append('<itemref idref="{}" properties="page-spread-right" />'.format(f[1]))
+                else:
+                    spine.append('<itemref idref="{}" properties="page-spread-left" />'.format(f[1]))
+
         d['manifest'] = '\n    '.join(manifest)
         d['spine'] = '\n    '.join(spine)
         d['ts'] = datetime.datetime.utcnow().isoformat() + '+00:00'
