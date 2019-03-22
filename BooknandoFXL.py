@@ -3,9 +3,11 @@
 # Booknando Comic Creator 0.1. 
 # baseado em: ComicIO: copyright (C) 2016, Daejuan Jacobs
 # Just need Python v3
-# * Coverimage.xtml
-# * Fix {title}
-# * YAML/JSON load metadata
+# TO-DO: 
+#   - Renomear imagens
+#   - Capturar tamanho dos metadados da imagem
+#   - Leitura, recorte e importação de PDF
+
 
 import os, sys
 from io import open
@@ -18,14 +20,16 @@ import random
 import string
 import argparse
 import yaml
+import csv
 
 
 class ComicCreator(object):
     
     version = 1  # class version when used as library
 
-    def __init__(self, file_name=None, meta_file=None,  verbose=0):
+    def __init__(self, file_name=None, meta_file=None, toc_file=None,  verbose=0):
         self._output_name = file_name
+        self.toc_file = toc_file
         self._files = None
         self._zip = None  # the in memory zip file
         self._zip_data = None
@@ -118,12 +122,22 @@ class ComicCreator(object):
     def _write_nav(self):
         d = self.d.copy()
         nav = []
+        lista_toc = []
         page_list = []
         d['nav'] = ''
-        for f in self._content:
-            if f[1].startswith('html'):
-                nav.append('<li><a href="{}">Page {}</a></li>'.format(*f))
-        d['nav'] = '\n    '.join(nav)
+
+
+        with open(self.toc_file, newline='') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=',') 
+
+            for linha in spamreader:
+                lista_toc.append(linha)
+                
+            i = 0
+            for f in lista_toc:
+                nav.append('<li><a href="pag_{}.xhtml">{}</a></li>'.format(lista_toc[i][1], lista_toc[i][0]))
+                i = i+1
+                d['nav'] = '\n    '.join(nav)
         
         d['page_list'] = ''
         for f in self._content:
@@ -211,7 +225,7 @@ class ComicCreator(object):
 
 def do_epub(args):
     with ComicCreator(               
-                   file_name=args.output,meta_file=args.meta, verbose=0) as j2e:
+                   file_name=args.output,meta_file=args.meta, toc_file=args.toc, verbose=0) as j2e:
         for file_name in args.file_names:
             j2e.add_image_file(file_name)
 
@@ -222,7 +236,8 @@ def main():
         "--output", "-o", 
         help="epub name if not specified, derived from title", required=True
     )
-    parser.add_argument("--meta", help="metadata")
+    parser.add_argument("--meta", help="Arquivo de metadados", required=True)
+    parser.add_argument("--toc", help="Arquivo de sumário", required=True)
     parser.add_argument("file_names", nargs="+")
     args = parser.parse_args()
 
