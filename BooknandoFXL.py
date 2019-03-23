@@ -45,14 +45,12 @@ class ComicCreator(object):
             opf_name="content.opf",
             nav_name="nav.xhtml",
             dctime=datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
-            ncx_ns='http://www.daisy.org/z3986/2005/ncx/',
             opf_ns='http://www.idpf.org/2007/opf',
             xsi_ns='http://www.w3.org/2001/XMLSchema-instance',
             dcterms_ns='http://purl.org/dc/terms/',
             dc_ns='http://purl.org/dc/elements/1.1/',
             rendition='http://www.idpf.org/vocab/rendition/#',
             ibooks='http://vocabulary.itunes.apple.com/rdf/ibooks/vocabulary-extensions-1.0/',
-            cal_ns='http://calibre.kovidgoyal.net/2009/metadata',
             cont_urn='urn:oasis:names:tc:opendocument:xmlns:container',
             mt='application/oebps-package+xml',  # media-type
             style_sheet='design.css',
@@ -116,17 +114,13 @@ class ComicCreator(object):
         d['manifest'] = '\n    '.join(manifest)
         d['spine'] = '\n    '.join(spine)
         d['ts'] = datetime.datetime.utcnow().isoformat() + '+00:00'
-
         self._write_file_from_template('OEBPS/'+self.d["opf_name"], 'template/content.tmpl', d)        
 
-    def _write_nav(self):
-        d = self.d.copy()
-        nav = []
+
+    def _read_toc_file(self,d):
         lista_toc = []
-        page_list = []
+        nav = []
         d['nav'] = ''
-
-
         with open(self.toc_file, newline='') as csvfile:
             spamreader = csv.reader(csvfile, delimiter=',') 
 
@@ -138,31 +132,33 @@ class ComicCreator(object):
                 nav.append('<li><a href="pag_{}.xhtml">{}</a></li>'.format(lista_toc[i][1], lista_toc[i][0]))
                 i = i+1
                 d['nav'] = '\n    '.join(nav)
-        
+
+    def _write_page_list(self,d):
+        page_list = []  
         d['page_list'] = ''
         for f in self._content:
             if f[1].startswith('html'):
                 page_list.append('<li><a href="{}">{}</a></li>'.format(f[0],f[3]))
-        d['page_list'] = '\n    '.join(page_list)
-        
+        d['page_list'] = '\n    '.join(page_list)     
+
+    def _write_nav(self):
+        d = self.d.copy()
+        self._read_toc_file(d) 
+        self._write_page_list(d)      
         self._write_file_from_template('OEBPS/'+self.d["nav_name"], 'template/nav.tmpl', d)
 
     def _add_html(self, title):
         file_name = self._name(False)
         d = self.d.copy()
-       # d['title'] = title
         d['img_name'] = self._name()
-        self._write_file_from_template('OEBPS/'+file_name, 'template/html.tmpl', d)
-        
+        self._write_file_from_template('OEBPS/'+file_name, 'template/html.tmpl', d)     
         self._content.append((file_name, 'html{}'.format(self._count), 'application/xhtml+xml', '{}'.format(self._count)))
 
-
-
-# Nova função para gravar arquivo
+    # Função para gravar arquivo usando um template
     def _write_file_from_template(self, file, template, data):
         template_file=open(template)
         template=template_file.read()
-        self._add_from_bytes(file, dedent(template).format(**data).encode('utf-8'))
+        self._add_from_bytes(file, template.format(**data).encode('utf-8'))
 
     def _write_style_sheet(self):
         file_name = self.d['style_sheet']
@@ -221,10 +217,7 @@ def do_epub(args):
 
 def main():
     parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument(
-        "--output", "-o", 
-        help="epub name if not specified, derived from title", required=True
-    )
+    parser.add_argument("--output", "-o", help="Nome do arquivo", required=True)
     parser.add_argument("--meta", help="Arquivo de metadados", required=True)
     parser.add_argument("--toc", help="Arquivo de sumário", required=True)
     parser.add_argument("file_names", nargs="+")
