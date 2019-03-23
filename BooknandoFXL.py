@@ -175,9 +175,7 @@ class ComicCreator(object):
     def _add_image_file(self, file_name, width=None, height=None, strip=None, max_strip_pixel=None, z=None):
         z = z if z else self.zip  # initializes if not done yet
         self._add_html(file_name)
-        # you can compress JPEGs, but with little result (1-8%) and
-        # more complex/slow decompression (zip then jpeg)
-        # Gain 2.836 Mb -> 2.798 Mb ( ~ 1% difference )
+  
         if width:
            im = EpubImage(file_name)
            z.writestr(self._name(), im.read(), zipfile.ZIP_STORED)
@@ -212,16 +210,7 @@ class ComicCreator(object):
         """).rstrip(), no_compression=True)
 
     def _add_container(self):
-        self._add_from_bytes('META-INF/container.xml', dedent("""\
-        <?xml version="1.0"?>
-           <container version="1.0" xmlns="{cont_urn}">
-          <rootfiles>
-            <rootfile full-path="OEBPS/{opf_name}" media-type="{mt}"/>
-          </rootfiles>
-        </container>
-        """).rstrip().format(**self.d))
-
-
+        self._write_file_from_template('META-INF/container.xml', 'template/container.tmpl', self.d)
 
 def do_epub(args):
     with ComicCreator(               
