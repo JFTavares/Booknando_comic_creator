@@ -117,6 +117,7 @@ class ComicCreator(object):
         self._write_file_from_template('OEBPS/'+self.d["opf_name"], 'template/content.tmpl', d)        
 
 
+
     def _read_toc_file(self,d):
         lista_toc = []
         nav = []
