@@ -105,11 +105,11 @@ class ComicCreator(object):
                     '<item href="Image/{}" id="{}" media-type="{}"/>'.format(*f))
 
             if f[1].startswith('html'):
-                numero = int(f[3])
-                if numero%2:
+                if int(f[3])%2:
                     spine.append('<itemref idref="{}" properties="page-spread-right" />'.format(f[1]))
                 else:
                     spine.append('<itemref idref="{}" properties="page-spread-left" />'.format(f[1]))
+
 
         d['manifest'] = '\n    '.join(manifest)
         d['spine'] = '\n    '.join(spine)
@@ -126,13 +126,12 @@ class ComicCreator(object):
             spamreader = csv.reader(csvfile, delimiter=',') 
 
             for linha in spamreader:
-                lista_toc.append(linha)
-                
-            i = 0
+                lista_toc.append(linha)               
+
             for f in lista_toc:
-                nav.append('<li><a href="pag_{}.xhtml">{}</a></li>'.format(lista_toc[i][1], lista_toc[i][0]))
-                i = i+1
+                nav.append('<li><a href="pag_{}.xhtml">{}</a></li>'.format(f[1], f[0]))
                 d['nav'] = '\n    '.join(nav)
+
 
     def _write_page_list(self,d):
         page_list = []  
@@ -140,7 +139,7 @@ class ComicCreator(object):
         for f in self._content:
             if f[1].startswith('html'):
                 page_list.append('<li><a href="{}">{}</a></li>'.format(f[0],f[3]))
-        d['page_list'] = '\n    '.join(page_list)     
+                d['page_list'] = '\n    '.join(page_list)     
 
     def _write_nav(self):
         d = self.d.copy()
