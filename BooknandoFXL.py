@@ -118,7 +118,7 @@ class ComicCreator(object):
 
 
 
-    def _read_toc_file(self,d):
+    def _read_create_toc(self,d):
         lista_toc = []
         nav = []
         d['nav'] = ''
@@ -133,7 +133,7 @@ class ComicCreator(object):
                 d['nav'] = '\n    '.join(nav)
 
 
-    def _write_page_list(self,d):
+    def _create_page_list(self,d):
         page_list = []  
         d['page_list'] = ''
         for f in self._content:
@@ -143,8 +143,8 @@ class ComicCreator(object):
 
     def _write_nav(self):
         d = self.d.copy()
-        self._read_toc_file(d) 
-        self._write_page_list(d)      
+        self._read_create_toc(d) 
+        self._create_page_list(d)      
         self._write_file_from_template('OEBPS/'+self.d["nav_name"], 'template/nav.tmpl', d)
 
     def _add_html(self, title):
