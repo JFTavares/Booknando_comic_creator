@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
-# Booknando Comic Creator 0.1. 
-# baseado em: ComicIO: copyright (C) 2016, Daejuan Jacobs
+# copyright (c) Booknando Livros
+# Booknando Comic Creator v0.1. 
 # Just need Python v3
 # TO-DO: 
 #   - Renomear imagens
-#   - Capturar tamanho dos metadados da imagem
+#   - Ler metadados das imagens
 #   - Leitura, recorte e importação de PDF
+#   - Manipular inDesign
 
 
 import os, sys
