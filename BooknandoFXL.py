@@ -41,6 +41,8 @@ class ComicCreator(object):
             title=metadata['title'],
             creator= metadata['author'],
             publisher=metadata['publisher'],
+            illustrator=metadata['illustrator'],
+            translator=metadata['translator'],
             img_width = metadata['img_width'],
             img_height = metadata['img_height'],
             opf_name="content.opf",

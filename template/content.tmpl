@@ -4,7 +4,12 @@
 <metadata xmlns:dc="{dc_ns}" xmlns:opf="{opf_ns}">
 
     <dc:title>{title}</dc:title>
-    <dc:creator>{creator}</dc:creator>
+    <dc:creator id="author">{creator}</dc:creator>
+    <meta refines="author" property="role" scheme="marc:relators">aut</meta>
+    <dc:creator id="illustrator">{illustrator}</dc:creator>
+    <meta refines="illustrator" property="role" scheme="marc:relators">ill</meta>
+    <dc:creator id="translator">{translator}</dc:creator>
+    <meta refines="translator" property="role" scheme="marc:relators">trl</meta> 
     <dc:publisher>{publisher}</dc:publisher>
     <dc:language>pt-BR</dc:language>
     <dc:date>{dctime}</dc:date>
