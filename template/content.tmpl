@@ -12,16 +12,19 @@
     <meta refines="translator" property="role" scheme="marc:relators">trl</meta> 
     <dc:publisher>{publisher}</dc:publisher>
     <dc:language>pt-BR</dc:language>
+    <dc:rights>{rights}</dc:rights>
+    <dc:source>{source}</dc:source>  
     <dc:date>{dctime}</dc:date>
-
-    <dc:identifier id="BookID">{isbn}</dc:identifier>
+    <dc:identifier id="BookID">urn:isbn:{isbn}</dc:identifier>
     <meta property="dcterms:modified">{dctime}</meta>
+    
     <meta content="img1" name="cover" />
     <meta name="generator" content="Booknando Comic Creator"/>
     <meta property="rendition:layout">pre-paginated</meta>	
     <meta property="rendition:orientation">auto</meta>
-    <meta property="rendition:spread">both</meta>
+    <meta property="rendition:spread">auto</meta>
     <meta property="ibooks:specified-fonts">true</meta>
+    <meta property="ibooks:version">{ibooksVersion}</meta>
 
 </metadata>
 

@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
-# copyright (c) Booknando Livros
-# Booknando Comic Creator v0.1. 
+# Create by: José Fernando Tavares - Booknando Livros
+# Twitter: @JFTavares
+# email: fernando@booknando.com.br
+# Booknando Comic Creator v0.2. 
 # Just need Python v3
 # TO-DO: 
 #   - Renomear imagens
@@ -26,7 +28,8 @@ import csv
 
 class ComicCreator(object):
     
-    version = 1  # class version when used as library
+    version = 2  # class version when used as library
+
 
     def __init__(self, file_name=None, meta_file=None, toc_file=None,  verbose=0):
         self._output_name = file_name
@@ -42,7 +45,10 @@ class ComicCreator(object):
             creator= metadata['author'],
             publisher=metadata['publisher'],
             illustrator=metadata['illustrator'],
-            translator=metadata['translator'],
+            translator= metadata['translator'],
+            rights=metadata['rights'],
+            source=metadata['source'],
+            ibooksVersion=metadata['ibooksVersion'],
             img_width = metadata['img_width'],
             img_height = metadata['img_height'],
             opf_name="content.opf",
@@ -63,6 +69,8 @@ class ComicCreator(object):
             nav_point=None,
             nav_uuid=None,
         )
+
+
 
     def __enter__(self):
         return self
@@ -219,9 +227,9 @@ def do_epub(args):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument("--output", "-o", help="Nome do arquivo", required=True)
-    parser.add_argument("--meta", help="Arquivo de metadados", required=True)
+    parser = argparse.ArgumentParser(description='Gerador de Comic Books no formato ePub3 FLX')
+    parser.add_argument("--output", "-o", help = "Nome do arquivo", required=True)
+    parser.add_argument("--meta", help = "Arquivo de metadados", required=True)
     parser.add_argument("--toc", help="Arquivo de sumário", required=True)
     parser.add_argument("file_names", nargs="+")
     args = parser.parse_args()
