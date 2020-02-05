@@ -23,6 +23,7 @@ import string
 import argparse
 import yaml
 import csv
+import optimiza
 
 
 class ComicCreator(object):
@@ -218,6 +219,7 @@ def make_epub(args):
     with ComicCreator(               
                    file_name=args.output,meta_file=args.meta, toc_file=args.toc, verbose=0) as single_file_item:
         for file_name in args.file_names:
+            optimiza.resize_image(file_name)
             single_file_item.add_image_file(file_name)
 
 

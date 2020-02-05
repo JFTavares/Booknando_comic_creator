@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="27e2c4c7-dec9-4ad7-abaa-82c73a20d307" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Booknando_comic_creator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Booknando_comic_creator.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BooknandoFXL.py" beforeDir="false" afterPath="$PROJECT_DIR$/BooknandoFXL.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/optimiza.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimiza.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/template/css.tmpl" beforeDir="false" afterPath="$PROJECT_DIR$/template/css.tmpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/template/html.tmpl" beforeDir="false" afterPath="$PROJECT_DIR$/template/html.tmpl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +58,7 @@
       <workItem from="1579877808265" duration="6629000" />
       <workItem from="1580927074498" duration="494000" />
       <workItem from="1580927601803" duration="309000" />
+      <workItem from="1580928072866" duration="1676000" />
     </task>
     <task id="LOCAL-00001" summary="Eliminando">
       <created>1571691767701</created>
