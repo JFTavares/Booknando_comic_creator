@@ -12,7 +12,6 @@
 #   - Manipular inDesign
 
 
-import os, sys
 from io import open
 from textwrap import dedent
 from io import BytesIO
@@ -32,6 +31,7 @@ class ComicCreator(object):
 
 
     def __init__(self, file_name=None, meta_file=None, toc_file=None,  verbose=0):
+
         self._output_name = file_name
         self.toc_file = toc_file
         self._files = None
@@ -40,7 +40,7 @@ class ComicCreator(object):
         self._content = []
         self._count = 1
         self._open_metadata(meta_file)
-        self.d = dict(
+        self.meta_info = dict(
             title=metadata['title'],
             creator= metadata['author'],
             publisher=metadata['publisher'],
@@ -84,25 +84,24 @@ class ComicCreator(object):
             self._write_nav()
             self._zip.close()
             self._zip = None
-            self.d['nav_point'] = None
+            self.meta_info['nav_point'] = None
             with open(self._output_name, 'wb') as ofp:
                 ofp.write(self._zip_data.getvalue())
-            # minimal test: listing contents of EPUB
-            # os.system('unzip -lv ' + self._output_name)
+
             return True
         return False
 
     def _open_metadata(self, meta_file):
         with open(meta_file) as f:
             global metadata
-            metadata = yaml.safe_load(f)
+            metadata=yaml.safe_load(f)
 
     def add_image_file(self, file_name):
         self._add_image_file(file_name)
         self._count += 1
 
     def _write_content(self):
-        d = self.d.copy()
+        d = self.meta_info.copy()
         manifest = []
         spine = []
         d['manifest'] = ''
@@ -113,7 +112,7 @@ class ComicCreator(object):
                     '<item href="{}" id="{}" media-type="{}"/>'.format(*f))
             if f[1].startswith('img'):
                 manifest.append(
-                    '<item href="Image/{}" id="{}" media-type="{}"/>'.format(*f))
+                    '<item href="Images/{}" id="{}" media-type="{}"/>'.format(*f))
 
             if f[1].startswith('html'):
                 if int(f[3])%2:
@@ -125,7 +124,7 @@ class ComicCreator(object):
         d['manifest'] = '\n    '.join(manifest)
         d['spine'] = '\n    '.join(spine)
         d['ts'] = datetime.datetime.utcnow().isoformat() + '+00:00'
-        self._write_file_from_template('OEBPS/'+self.d["opf_name"], 'template/content.tmpl', d)        
+        self._write_file_from_template('OEBPS/'+self.meta_info["opf_name"], 'template/content.tmpl', d)        
 
 
 
@@ -153,14 +152,14 @@ class ComicCreator(object):
                 d['page_list'] = '\n    '.join(page_list)     
 
     def _write_nav(self):
-        d = self.d.copy()
+        d = self.meta_info.copy()
         self._read_create_toc(d) 
         self._create_page_list(d)      
-        self._write_file_from_template('OEBPS/'+self.d["nav_name"], 'template/nav.tmpl', d)
+        self._write_file_from_template('OEBPS/'+self.meta_info["nav_name"], 'template/nav.tmpl', d)
 
     def _add_html(self, title):
         file_name = self._name(False)
-        d = self.d.copy()
+        d = self.meta_info.copy()
         d['img_name'] = self._name()
         self._write_file_from_template('OEBPS/'+file_name, 'template/html.tmpl', d)     
         self._content.append((file_name, 'html{}'.format(self._count), 'application/xhtml+xml', '{}'.format(self._count)))
@@ -172,22 +171,18 @@ class ComicCreator(object):
         self._add_from_bytes(file, template.format(**data).encode('utf-8'))
 
     def _write_style_sheet(self):
-        file_name = self.d['style_sheet']
-        self._write_file_from_template('OEBPS/CSS/'+file_name, 'template/css.tmpl', self.d)
+        file_name = self.meta_info['style_sheet']
+        self._write_file_from_template('OEBPS/Styles/'+file_name, 'template/css.tmpl', self.meta_info)
         self._content.append((file_name, 'css', 'text/css'))
 
     def _name(self, image=True):
         return 'pag_{}.{}'.format(self._count, 'jpg' if image else 'xhtml')
 
-    def _add_image_file(self, file_name, width=None, height=None, strip=None, max_strip_pixel=None, z=None):
+    def _add_image_file(self, file_name, z=None):
         z = z if z else self.zip  # initializes if not done yet
         self._add_html(file_name)
-  
-        if width:
-           im = EpubImage(file_name)
-           z.writestr(self._name(), im.read(), zipfile.ZIP_STORED)
-        else:
-            z.write(file_name, 'OEBPS/Image/'+self._name())
+
+        z.write(file_name, 'OEBPS/Images/'+self._name())
         self._content.append((self._name(), 'img{}'.format(self._count), 'image/jpeg'))
 
     @property
@@ -199,9 +194,9 @@ class ComicCreator(object):
         #self._zip_data = '/var/tmp/epubtmp/yy.zip'
         self._zip = zipfile.ZipFile(self._zip_data, "a",
                                     zipfile.ZIP_DEFLATED, False)
-        self.d['uuid'] = uuid.uuid4()
-        self.d['lead_ltr'] = random.choice(string.ascii_lowercase)
-        self.d['nav_uuid'] = uuid.uuid4()
+        self.meta_info['uuid'] = uuid.uuid4()
+        self.meta_info['lead_ltr'] = random.choice(string.ascii_lowercase)
+        self.meta_info['nav_uuid'] = uuid.uuid4()
         self._add_mimetype()
         self._add_container()
         return self._zip
@@ -217,13 +212,13 @@ class ComicCreator(object):
         """).rstrip(), no_compression=True)
 
     def _add_container(self):
-        self._write_file_from_template('META-INF/container.xml', 'template/container.tmpl', self.d)
+        self._write_file_from_template('META-INF/container.xml', 'template/container.tmpl', self.meta_info)
 
-def do_epub(args):
+def make_epub(args):
     with ComicCreator(               
-                   file_name=args.output,meta_file=args.meta, toc_file=args.toc, verbose=0) as j2e:
+                   file_name=args.output,meta_file=args.meta, toc_file=args.toc, verbose=0) as single_file_item:
         for file_name in args.file_names:
-            j2e.add_image_file(file_name)
+            single_file_item.add_image_file(file_name)
 
 
 def main():
@@ -234,7 +229,7 @@ def main():
     parser.add_argument("file_names", nargs="+")
     args = parser.parse_args()
 
-    do_epub(args)
+    make_epub(args)
 
 
 if __name__ == "__main__":
