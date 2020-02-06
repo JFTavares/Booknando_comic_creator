@@ -1,5 +1,5 @@
 /* CSS criado por Booknando Livros   */ 
-/* Booknando Comic Creator 0.1  */
+/* Booknando Comic Creator 0.2  */
 /* Sistema de produção de Comic book ePub3 FXL */
 
 @charset "UTF-8";
@@ -11,9 +11,13 @@ body{{
     left: 0px;
     width: {img_width}px;
     height: {img_height}px;
+    position: absolute;
 }}
 
-div.pageImage {{
+figure {{
+    display:block;
+    margin: 0;
+	padding: 0;
     overflow-x: hidden;
     overflow-y: hidden;
     position: absolute;
@@ -24,15 +28,15 @@ div.pageImage {{
     height: {img_height}px;
     opacity: 1;
     z-index: 0;
-    display:block;
     pointer-events: none;
 }}
 
 img {{
+    margin: 0;
+	padding: 0;
     position: absolute;
     left: 0px;
     top: 0px;
     width: {img_width}px;
     height: {img_height}px;
-    max-width: 100%;
 }}
