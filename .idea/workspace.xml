@@ -23,7 +23,6 @@
   <component name="ProjectId" id="1SWuLbvU4b1BYvl5KG0uUbYGVal" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
@@ -57,6 +56,7 @@
       <workItem from="1580928072866" duration="2743000" />
       <workItem from="1581000150307" duration="2115000" />
       <workItem from="1581530476147" duration="370000" />
+      <workItem from="1592957692172" duration="625000" />
     </task>
     <task id="LOCAL-00001" summary="Eliminando">
       <created>1571691767701</created>
@@ -111,20 +111,19 @@
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Eliminando" />
