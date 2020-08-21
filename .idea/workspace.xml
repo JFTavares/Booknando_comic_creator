@@ -2,15 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="27e2c4c7-dec9-4ad7-abaa-82c73a20d307" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Booknando_comic_creator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Booknando_comic_creator.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BooknandoFXL.py" beforeDir="false" afterPath="$PROJECT_DIR$/BooknandoFXL.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="Booknando_comic_creator" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -20,6 +20,7 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="4e8ce4cb-7dd4-4a58-a8ca-430d105f25f2" />
   <component name="ProjectId" id="1SWuLbvU4b1BYvl5KG0uUbYGVal" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -28,10 +29,17 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -39,6 +47,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -57,6 +66,8 @@
       <workItem from="1581000150307" duration="2115000" />
       <workItem from="1581530476147" duration="370000" />
       <workItem from="1592957692172" duration="625000" />
+      <workItem from="1597777136554" duration="8000" />
+      <workItem from="1598020014106" duration="1116000" />
     </task>
     <task id="LOCAL-00001" summary="Eliminando">
       <created>1571691767701</created>
@@ -111,7 +122,7 @@
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -134,34 +145,14 @@
     <option name="LAST_COMMIT_MESSAGE" value="Novos ajustes" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="304" y="153" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1580927485769">
-      <screen x="0" y="23" width="1920" height="1008" />
+    <state x="917" y="207" key="#Inspections" timestamp="1598020407101">
+      <screen x="0" y="23" width="2048" height="1052" />
     </state>
-    <state x="304" y="153" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1920.1008/1920.23.1366.745@0.23.1920.1008" timestamp="1580927485769" />
-    <state x="509" y="23" key="CommitChangelistDialog2" timestamp="1581012363031">
-      <screen x="0" y="23" width="1920" height="1008" />
+    <state x="917" y="207" key="#Inspections/0.23.2048.1052/2048.23.1920.1057@0.23.2048.1052" timestamp="1598020407101" />
+    <state x="581" y="193" key="SettingsEditor" timestamp="1595018879417">
+      <screen x="0" y="23" width="2048" height="1049" />
     </state>
-    <state x="509" y="23" key="CommitChangelistDialog2/0.23.1920.1008/1920.23.1366.745@0.23.1920.1008" timestamp="1581012363031" />
-    <state x="220" y="77" key="MergeDialog" timestamp="1580927678122">
-      <screen x="0" y="23" width="1920" height="1008" />
-    </state>
-    <state x="220" y="77" key="MergeDialog/0.23.1920.1008/1920.23.1366.745@0.23.1920.1008" timestamp="1580927678122" />
-    <state x="696" y="205" key="MultipleFileMergeDialog" timestamp="1580927678174">
-      <screen x="0" y="23" width="1920" height="1008" />
-    </state>
-    <state x="696" y="205" key="MultipleFileMergeDialog/0.23.1920.1008/1920.23.1366.745@0.23.1920.1008" timestamp="1580927678174" />
-    <state x="349" y="130" key="SettingsEditor" timestamp="1580927883665">
-      <screen x="0" y="23" width="1920" height="1008" />
-    </state>
-    <state x="349" y="130" key="SettingsEditor/0.23.1920.1008/1920.23.1366.745@0.23.1920.1008" timestamp="1580927883665" />
-    <state x="569" y="318" key="com.intellij.ide.util.TipDialog" timestamp="1581534774828">
-      <screen x="0" y="23" width="1920" height="1008" />
-    </state>
-    <state x="569" y="318" key="com.intellij.ide.util.TipDialog/0.23.1920.1008/1920.23.1366.745@0.23.1920.1008" timestamp="1581534774828" />
-    <state x="703" y="129" key="git4idea.branch.GitSmartOperationDialog" timestamp="1580927942238">
-      <screen x="0" y="23" width="1920" height="1008" />
-    </state>
-    <state x="703" y="129" key="git4idea.branch.GitSmartOperationDialog/0.23.1920.1008/1920.23.1366.745@0.23.1920.1008" timestamp="1580927942238" />
+    <state x="581" y="193" key="SettingsEditor/0.23.2048.1049/2048.23.1920.1057@0.23.2048.1049" timestamp="1595018879417" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Booknando_comic_creator$cropPDF.coverage" NAME="cropPDF Coverage Results" MODIFIED="1571692209709" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
