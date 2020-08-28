@@ -1,16 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="27e2c4c7-dec9-4ad7-abaa-82c73a20d307" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Booknando_comic_creator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Booknando_comic_creator.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BooknandoFXL.py" beforeDir="false" afterPath="$PROJECT_DIR$/BooknandoFXL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/optimiza.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimiza.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -67,7 +92,8 @@
       <workItem from="1581530476147" duration="370000" />
       <workItem from="1592957692172" duration="625000" />
       <workItem from="1597777136554" duration="8000" />
-      <workItem from="1598020014106" duration="1116000" />
+      <workItem from="1598020014106" duration="4961000" />
+      <workItem from="1598568048457" duration="989000" />
     </task>
     <task id="LOCAL-00001" summary="Eliminando">
       <created>1571691767701</created>

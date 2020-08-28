@@ -3,10 +3,10 @@ from PIL import Image,ImageFilter
 
 
 def resize_image(file_name):
-    basewidth = 1600
+    basewidth = 1200
     file_imagem = Image.open(file_name)
     x, y = file_imagem.size
-    if x == 1600:
+    if x == basewidth:
         print('Imagem já otimizada: ', file_name)
     else:
         wpercent = (basewidth/float(file_imagem.size[0]))

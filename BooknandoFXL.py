@@ -10,8 +10,7 @@
 #   - Ler metadados das imagens
 #   - Leitura, recorte e importação de PDF
 #   - Manipular inDesign
-
-
+import re
 from io import open
 from textwrap import dedent
 from io import BytesIO
@@ -212,10 +211,15 @@ class Flx_maker(object):
 def make_epub(args):
     with Flx_maker(
             file_name=args.output, meta_file=args.meta, toc_file=args.toc, verbose=0) as single_file_item:
-        for file_name in args.file_names.sort():
+        for file_name in sorted(args.file_names):
             optimiza.resize_image(file_name)
             single_file_item.add_image_file(file_name)
 
+
+def gerar_amostra(args):
+    args.output = re.sub('\.epub', '_AMOSTRA.epub', args.output)
+    args.file_names = args.file_names[:15]
+    make_epub(args)
 
 def main():
     parser = argparse.ArgumentParser(description='Gerador de Comic Books no formato ePub3 FLX')
@@ -223,9 +227,17 @@ def main():
     parser.add_argument("--meta", help="Arquivo de metadados", required=True)
     parser.add_argument("--toc", help="Arquivo de sumário", required=True)
     parser.add_argument("file_names", nargs="+")
-    args = parser.parse_args()
 
+    args = parser.parse_args()
+    # Faz ajustes nos caminho, retirando caractere de escape
+    args.output = re.sub('\\\\', '', args.output)
+    args.toc = re.sub('\\\\', '', args.toc)
+    args.meta = re.sub('\\\\', '', args.meta)
+
+    #chama a função principal
     make_epub(args)
+
+    gerar_amostra(args)
 
 
 if __name__ == "__main__":
